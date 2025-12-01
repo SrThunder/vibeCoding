@@ -62,10 +62,12 @@ class HybridRAGPipeline:
                 pregunta = faq.get("pregunta", "").lower()
                 respuesta = faq.get("respuesta", "").lower()
                 
-                # Puntos por match en palabras_clave
+                # Puntos por match en palabras_clave (más estricto)
+                keyword_matches = 0
                 for t in tokens:
                     if t in palabras_clave:
-                        score += 3
+                        score += 4
+                        keyword_matches += 1
                     elif t in pregunta:
                         score += 2
                     elif t in respuesta:
@@ -75,8 +77,9 @@ class HybridRAGPipeline:
                     best_score = score
                     best_match = faq
             
-            # Si encontramos un match razonable (al menos 2 puntos), retornarlo
-            if best_match and best_score >= 2:
+            # Aumentar threshold: requerir al menos 4 puntos (ej: 1 keyword match o 2 pregunta matches)
+            # Esto previene matches débiles/accidentales
+            if best_match and best_score >= 4:
                 return {
                     "id": best_match.get("id"),
                     "question": best_match.get("pregunta"),

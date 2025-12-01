@@ -188,6 +188,51 @@
       "palabras_clave": ["pisos", "piso", "baldosa", "adoquín", "suelo"],
       "productos_relacionados": ["BLOQ_003", "BLOQ_002", "MORT_001"],
       "pdf_link": "https://dolmen.com/catalogo/bloques.pdf"
+    },
+    {
+      "id": "FAQ_022",
+      "pregunta": "¿Qué pintura recomiendan para interiores?",
+      "respuesta": "Para interiores recomendamos Látex Supremo (acabado profesional, duradero y resistente). Antes de pintar, aplica Uniseal como preparador para garantizar mejor adherencia, eliminar alcalinidad y evitar manchas. Esta combinación asegura resultados profesionales en salas, dormitorios y espacios interiores.",
+      "categoria": "Pinturas",
+      "palabras_clave": ["pintura", "interior", "interiores", "sala", "dormitorio"],
+      "productos_relacionados": ["PINT_001", "PINT_002"],
+      "pdf_link": "https://dolmen.com/catalogo/pinturas.pdf#latex-supremo"
+    },
+    {
+      "id": "FAQ_023",
+      "pregunta": "¿Tengo humedad en el cuarto de mi hija, qué me recomiendan?",
+      "respuesta": "Para cuartos con humedad, sigue estos pasos: 1) Limpia bien la pared, 2) Aplica Uniseal (sellador repelente al agua que prepara la superficie), 3) Pinta con Látex Supremo o Esmalte Supremo según el material, 4) Para máxima protección en zonas muy húmedas, considera impermeabilizante Maxiseal antes del sellador. Esta barrera protectora evitará filtraciones y manchas futuras.",
+      "categoria": "Pinturas",
+      "palabras_clave": ["humedad", "cuarto", "habitación", "dormitorio", "pared", "hijo"],
+      "productos_relacionados": ["PINT_002", "PINT_001"],
+      "pdf_link": "https://dolmen.com/catalogo/pinturas.pdf#humedad"
+    },
+    {
+      "id": "FAQ_024",
+      "pregunta": "¿Qué puedo hacer si tengo una gotera en el techo?",
+      "respuesta": "Para goteras en techos: 1) Impermeabilizante Maxiseal es ideal para sellar filtraciones (aplica directamente sobre la grieta), 2) Después aplica Látex Supremo para pintar sobre la zona reparada, 3) Para grietas estructurales grandes, consulta con un ingeniero. Si la gotera viene de afuera, asegúrate que el techo tenga pendiente adecuada para drenar agua. Estos productos forman barrera impermeable duradera.",
+      "categoria": "Pinturas",
+      "palabras_clave": ["gotera", "techo", "fuga", "filtracion", "agua", "lluvia"],
+      "productos_relacionados": ["PINT_002", "PINT_001"],
+      "pdf_link": "https://dolmen.com/catalogo/pinturas.pdf#impermeabilizantes"
+    },
+    {
+      "id": "FAQ_025",
+      "pregunta": "¿Qué me recomiendas para cambiar todo el servicio higiénico del baño?",
+      "respuesta": "Para cambiar todo el servicio higiénico, el Combo Max es la opción integral que incluye: Inodoro Milán HET (moderno y eficiente), Lavabo Alpes (elegante y funcional), y Llave Capri (durable y confiable). Estos tres componentes son compatibles entre sí y están diseñados para funcionar perfectamente juntos. Solución completa y económica para baños residenciales.",
+      "categoria": "Grifería",
+      "palabras_clave": ["servicio", "higiénico", "baño", "inodoro", "lavabo", "sanitarios"],
+      "productos_relacionados": ["GRIF_001"],
+      "pdf_link": "https://dolmen.com/catalogo/griferia.pdf#combo-max"
+    },
+    {
+      "id": "FAQ_026",
+      "pregunta": "¿Qué recomiendas para pisos en la sala de visitas?",
+      "respuesta": "Para sala de visitas (alto tráfico de personas), recomendamos: Baldosa Gres (muy resistente, disponible en varios acabados, fácil de limpiar) o Adoquín Rústico para un look más natural. Antes de instalar, prepara la base con Multimix (mortero predosificado que garantiza nivelación perfecta). Baldosa Gres es ideal para este uso porque resiste bien el tráfico constante y durará años.",
+      "categoria": "Bloques_Acabados",
+      "palabras_clave": ["piso", "sala", "visitas", "baldosa", "tráfico", "salón"],
+      "productos_relacionados": ["BLOQ_003", "MORT_001"],
+      "pdf_link": "https://dolmen.com/catalogo/bloques.pdf#baldosa-gres"
     }
   ]
 }
