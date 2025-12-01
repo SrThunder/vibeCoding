@@ -170,7 +170,14 @@ def show_chat():
         st.markdown(f"# 🏗️ DOLMEN - Asistente RAG")
         st.markdown(f"**Bienvenido:** {st.session_state.user_email}")
     
-    with col3:
+    col_reset, col_logout = st.columns(2)
+    
+    with col_reset:
+        if st.session_state.chat_history and st.button("↩️ Volver a preguntas", use_container_width=True):
+            st.session_state.chat_history = []
+            st.rerun()
+    
+    with col_logout:
         if st.button("🚪 Cerrar sesión", use_container_width=True):
             logout_user()
             st.rerun()
