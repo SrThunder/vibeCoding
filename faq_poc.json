@@ -134,6 +134,60 @@
       "palabras_clave": ["llave", "campanola", "presión", "bronce", "corrosión"],
       "productos_relacionados": ["GRIF_002"],
       "pdf_link": "https://dolmen.com/catalogo/griferia.pdf#llave-campanola"
+    },
+    {
+      "id": "FAQ_016",
+      "pregunta": "¿Para qué sirven las varillas y mallas de acero?",
+      "respuesta": "Las varillas y mallas de acero sirven para refuerzo estructural en construcción. Las varillas corrugadas son ideales para estructuras no sismorresistentes, columnas y vigas; requieren instalación manual. Las mallas electrosoldadas son prefabricadas, más seguras, requieren menos personal y aceleran la obra. Ambas garantizan durabilidad y resistencia estructural.",
+      "categoria": "Aceromateriales",
+      "palabras_clave": ["varillas", "mallas", "acero", "refuerzo", "estructura"],
+      "productos_relacionados": ["ACER_001", "ACER_003"],
+      "pdf_link": "https://dolmen.com/catalogo/aceromateriales.pdf#refuerzo"
+    },
+    {
+      "id": "FAQ_017",
+      "pregunta": "¿Qué productos evitan la humedad en paredes?",
+      "respuesta": "Para evitar la humedad en paredes recomendamos: Uniseal (sellador preparador que repele agua), Látex Supremo (pintura resistente a humedad para exteriores), e impermeabilizantes como Maxiseal. Estos productos forman una barrera protectora contra la humedad, lluvia y cambios de temperatura. Aplicar Uniseal primero, luego pintura para máxima protección.",
+      "categoria": "Pinturas",
+      "palabras_clave": ["humedad", "paredes", "impermeabilizante", "sellador", "protección"],
+      "productos_relacionados": ["PINT_002", "PINT_001"],
+      "pdf_link": "https://dolmen.com/catalogo/pinturas.pdf#impermeabilizantes"
+    },
+    {
+      "id": "FAQ_018",
+      "pregunta": "¿Qué selladores disponibles tiene DOLMEN?",
+      "respuesta": "DOLMEN ofrece varios selladores especializados: Uniseal (preparador y sellador para enlucidos), Maxiseal (impermeabilizante de alta durabilidad), y selladores de juntas para azulejos. Cada uno está diseñado para aplicaciones específicas: Uniseal para muros de cemento, Maxiseal para superficies expuestas a agua, y sellador de juntas para áreas húmedas. Consulta la aplicación específica para elegir el correcto.",
+      "categoria": "Pinturas",
+      "palabras_clave": ["selladores", "sellador", "juntas", "impermeabilizante"],
+      "productos_relacionados": ["PINT_002"],
+      "pdf_link": "https://dolmen.com/catalogo/pinturas.pdf#selladores"
+    },
+    {
+      "id": "FAQ_019",
+      "pregunta": "¿Para qué sirven los morteros y cómo elegir el correcto?",
+      "respuesta": "Los morteros DOLMEN (Multimix, Maxibond, Maxiempaste) sirven para: enlucido de muros, pegado de bloques, nivelación de pisos y acabados. Multimix es predosificado ideal para nivelación; Maxibond es excelente adhesivo para cerámicas; Maxiempaste Interior proporciona acabados ultra lisos. Cada uno garantiza constancia de calidad y acelera la obra.",
+      "categoria": "Morteros_Pegantes",
+      "palabras_clave": ["morteros", "mortero", "multimix", "maxibond", "enlucido", "pegado"],
+      "productos_relacionados": ["MORT_001", "MORT_002", "MORT_003"],
+      "pdf_link": "https://dolmen.com/catalogo/morteros.pdf"
+    },
+    {
+      "id": "FAQ_020",
+      "pregunta": "¿Cuáles son los impermeabilizantes y cómo funcionan?",
+      "respuesta": "Los impermeabilizantes DOLMEN crean barreras protectoras contra agua y humedad. Maxiseal es un impermeabilizante de alta durabilidad para superficies expuestas. Látex Supremo pintura para exteriores también proporciona protección. Estos productos evitan filtraciones, manchas de humedad y deterioro estructural. Ideal para terrazas, fachadas, sótanos y áreas bajo tierra.",
+      "categoria": "Pinturas",
+      "palabras_clave": ["impermeabilizantes", "impermeabilizante", "agua", "protección", "terrazas"],
+      "productos_relacionados": ["PINT_002", "PINT_001"],
+      "pdf_link": "https://dolmen.com/catalogo/pinturas.pdf#impermeabilizantes"
+    },
+    {
+      "id": "FAQ_021",
+      "pregunta": "¿Qué producto uso para pisos?",
+      "respuesta": "Para pisos DOLMEN recomienda: Multimix (mortero predosificado para nivelación y preparación), Baldosa Gres (resistente y durable para alto tráfico), y Adoquín Rústico (para áreas exteriores). Multimix prepara la base, Baldosa Gres ofrece acabado profesional en interiores, Adoquín para exteriores. Todas garantizan durabilidad y fácil mantenimiento.",
+      "categoria": "Bloques_Acabados",
+      "palabras_clave": ["pisos", "piso", "baldosa", "adoquín", "suelo"],
+      "productos_relacionados": ["BLOQ_003", "BLOQ_002", "MORT_001"],
+      "pdf_link": "https://dolmen.com/catalogo/bloques.pdf"
     }
   ]
 }

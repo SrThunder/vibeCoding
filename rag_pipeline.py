@@ -33,6 +33,7 @@ class HybridRAGPipeline:
     def _search_faqs(self, query: str, local_id: str, threshold: float = 0.75) -> Optional[Dict]:
         """
         Busca en FAQs usando similitud de embeddings.
+        Primero intenta búsqueda exacta por palabras clave, luego embeddings.
         
         Args:
             query: Pregunta del usuario
@@ -42,10 +43,53 @@ class HybridRAGPipeline:
         Returns:
             FAQ si se encuentra, None en caso contrario
         """
-        query_embedding = self.embeddings.embed_query(query)
-        
-        # Intentar buscar en tabla faqs (Supabase). Si falla, usar fallback local (faq_poc.json)
+        # 1. Intentar búsqueda LOCAL primero (más rápida y precisa)
         try:
+            with open("faq_poc.json", "r", encoding="utf-8") as f:
+                faqs = json.load(f).get("faqs", [])
+            
+            q = query.lower().strip()
+            tokens = [t for t in q.split() if len(t) > 2]
+            
+            # Búsqueda exacta: primero buscar en palabras_clave
+            best_match = None
+            best_score = 0
+            
+            for faq in faqs:
+                # Scoring: palabras_clave exactas > en pregunta > en respuesta
+                score = 0
+                palabras_clave = [pk.lower() for pk in faq.get("palabras_clave", [])]
+                pregunta = faq.get("pregunta", "").lower()
+                respuesta = faq.get("respuesta", "").lower()
+                
+                # Puntos por match en palabras_clave
+                for t in tokens:
+                    if t in palabras_clave:
+                        score += 3
+                    elif t in pregunta:
+                        score += 2
+                    elif t in respuesta:
+                        score += 1
+                
+                if score > best_score:
+                    best_score = score
+                    best_match = faq
+            
+            # Si encontramos un match razonable (al menos 2 puntos), retornarlo
+            if best_match and best_score >= 2:
+                return {
+                    "id": best_match.get("id"),
+                    "question": best_match.get("pregunta"),
+                    "answer": best_match.get("respuesta"),
+                    "category": best_match.get("categoria"),
+                    "pdf_link": best_match.get("pdf_link"),
+                }
+        except Exception:
+            pass
+        
+        # 2. Si no hay match local, intentar búsqueda en Supabase
+        try:
+            query_embedding = self.embeddings.embed_query(query)
             response = self.supabase.rpc(
                 "search_faqs",
                 {
@@ -57,34 +101,15 @@ class HybridRAGPipeline:
 
             if response.data and len(response.data) > 0:
                 return response.data[0]
-        except Exception as e:
-            # Fallback local: cargar faq_poc.json y hacer búsqueda por palabras clave
-            try:
-                with open("faq_poc.json", "r", encoding="utf-8") as f:
-                    faqs = json.load(f).get("faqs", [])
-                q = query.lower()
-                # Mejor búsqueda por tokens: coincidir suficientes tokens en cualquier campo
-                tokens = [t for t in q.split() if len(t) > 2]
-                for faq in faqs:
-                    text = " ".join([str(faq.get(k, "")) for k in ("pregunta", "respuesta", "categoria")]).lower()
-                    matches = sum(1 for t in tokens if t in text)
-                    # Considerar match si se encuentran al menos la mitad de los tokens (mínimo 1)
-                    if matches >= max(1, len(tokens) // 2):
-                        return {
-                            "id": faq.get("id"),
-                            "question": faq.get("pregunta"),
-                            "answer": faq.get("respuesta"),
-                            "category": faq.get("categoria"),
-                            "pdf_link": faq.get("pdf_link"),
-                        }
-            except Exception:
-                pass
+        except Exception:
+            pass
 
         return None
     
     def _search_products(self, query: str, local_id: str, top_k: int = 3) -> List[Dict]:
         """
         Busca productos relevantes usando similitud vectorial.
+        Primero intenta búsqueda local exacta, luego embeddings.
         
         Args:
             query: Necesidad del usuario
@@ -94,10 +119,55 @@ class HybridRAGPipeline:
         Returns:
             Lista de productos relevantes
         """
-        query_embedding = self.embeddings.embed_query(query)
-        
-        # Intentar buscar en tabla products (Supabase). Si falla, usar fallback local (catalogo_jerarquia.json)
+        # 1. Intentar búsqueda LOCAL primero (más rápida)
         try:
+            with open("catalogo_jerarquia.json", "r", encoding="utf-8") as f:
+                catalog = json.load(f)
+                products = catalog.get("products", []) if isinstance(catalog, dict) else catalog
+            
+            q = query.lower().strip()
+            tokens = [t for t in q.split() if len(t) > 2]
+            matches = []
+            
+            for p in products:
+                # Scoring: nombre exacto > categoría > descripción
+                score = 0
+                nombre = str(p.get("nombre", "")).lower()
+                categoria = str(p.get("categoria", "")).lower()
+                descripcion = str(p.get("descripcion", "")).lower()
+                
+                for t in tokens:
+                    if t == nombre or t in nombre:
+                        score += 5
+                    elif t in categoria:
+                        score += 3
+                    elif t in descripcion:
+                        score += 1
+                
+                if score > 0:
+                    matches.append((score, {
+                        "id": p.get("id"),
+                        "product_id": p.get("product_id") or p.get("id"),
+                        "nombre": p.get("nombre") or p.get("id"),
+                        "categoria": p.get("categoria"),
+                        "descripcion": p.get("descripcion", ""),
+                        "variantes": p.get("variantes", []),
+                        "usos": p.get("usos", []),
+                        "beneficios": p.get("beneficios", []),
+                        "pdf_link": p.get("pdf_link"),
+                        "stock": p.get("stock", True),
+                    }))
+            
+            # Retornar matches ordenados por score
+            if matches:
+                matches.sort(key=lambda x: x[0], reverse=True)
+                return [m[1] for m in matches[:top_k]]
+        except Exception:
+            pass
+        
+        # 2. Si no hay matches locales, intentar búsqueda en Supabase
+        try:
+            query_embedding = self.embeddings.embed_query(query)
             response = self.supabase.rpc(
                 "search_products",
                 {
@@ -109,33 +179,9 @@ class HybridRAGPipeline:
 
             return response.data if response.data else []
         except Exception:
-            # Fallback local: cargar catalogo_jerarquia.json y hacer búsqueda por nombre/categoría
-            try:
-                with open("catalogo_jerarquia.json", "r", encoding="utf-8") as f:
-                    catalog = json.load(f)
-                    products = catalog.get("products", []) if isinstance(catalog, dict) else catalog
-                q = query.lower()
-                matches = []
-                for p in products:
-                    text = " ".join([str(p.get(k, "")) for k in ("nombre", "categoria", "descripcion")]).lower()
-                    if q in text:
-                        matches.append({
-                            "id": p.get("id"),
-                            "product_id": p.get("product_id") or p.get("id"),
-                            "nombre": p.get("nombre") or p.get("id"),
-                            "categoria": p.get("categoria"),
-                            "descripcion": p.get("descripcion", ""),
-                            "variantes": p.get("variantes", []),
-                            "usos": p.get("usos", []),
-                            "beneficios": p.get("beneficios", []),
-                            "pdf_link": p.get("pdf_link"),
-                            "stock": p.get("stock", True),
-                        })
-                    if len(matches) >= top_k:
-                        break
-                return matches
-            except Exception:
-                return []
+            pass
+        
+        return []
     
     def _generate_response(
         self,
