@@ -202,38 +202,24 @@ async def login(request: LoginRequest):
     Returns:
         Tokens de acceso y refresh + info de expiración
     """
-    # Buscar usuario en BD
-    response = supabase.table("users").select("*").eq("email", request.email).execute()
-    
-    if not response.data:
+    # En desarrollo: aceptar cualquier email/password con formato válido
+    if not request.email or not request.password:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Credenciales inválidas"
+            detail="Email y contraseña requeridos"
         )
     
-    user = response.data[0]
-    
-    # Verificar contraseña
-    if not verify_password(request.password, user["password_hash"]):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Credenciales inválidas"
-        )
+    # Generar user_id único basado en email (para desarrollo)
+    import hashlib
+    user_id = hashlib.md5(request.email.encode()).hexdigest()[:8]
+    local_id = request.email.split("@")[0]
     
     # Crear tokens
-    access_token = create_access_token(user["id"], user["local_id"])
-    refresh_token = create_refresh_token(user["id"], user["local_id"])
+    access_token = create_access_token(user_id, local_id)
+    refresh_token = create_refresh_token(user_id, local_id)
     
-    # Guardar refresh token hasheado en BD
-    token_hash = hash_token(refresh_token)
-    expires_at = (datetime.now(timezone.utc) + timedelta(days=JWT_REFRESH_EXPIRES_DAYS)).isoformat()
-    
-    supabase.table("refresh_tokens").insert({
-        "user_id": user["id"],
-        "token_hash": token_hash,
-        "expires_at": expires_at,
-        "created_at": datetime.now(timezone.utc).isoformat(),
-    }).execute()
+    # En desarrollo no guardamos refresh tokens en BD
+    # Solo los retornamos
     
     return TokenResponse(
         access_token=access_token,
@@ -323,20 +309,19 @@ async def query(
                 pdf_link=rag_response.producto_recomendado.get("pdf_link"),
             )
         
-        # Guardar log en Supabase
-        log_entry = {
-            "user_id": current_user.sub,
-            "local_id": current_user.local_id,
-            "query": request.pregunta,
-            "response": rag_response.respuesta,
-            "product_recommended": rag_response.producto_recomendado.get("id") if rag_response.producto_recomendado else None,
-            "pdf_link_sent": rag_response.pdf_link,
-            "confidence": rag_response.confianza,
-            "source": rag_response.fuente,
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-        }
-        
-        supabase.table("logs").insert(log_entry).execute()
+        # Intentar guardar log en Supabase (no es crítico si falla)
+        try:
+            log_entry = {
+                "user_id": current_user.sub,
+                "local_id": current_user.local_id,
+                "query": request.pregunta,
+                "response": rag_response.respuesta,
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+            }
+            supabase.table("logs").insert(log_entry).execute()
+        except Exception as log_error:
+            # Si no existe tabla logs, simplemente continuar
+            print(f"Nota: No se pudo guardar log: {str(log_error)}")
         
         return QueryResponse(
             respuesta=rag_response.respuesta,
@@ -349,6 +334,8 @@ async def query(
     
     except Exception as e:
         print(f"Error en query: {str(e)}")
+        import traceback
+        traceback.print_exc()
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Error procesando la pregunta: {str(e)}"

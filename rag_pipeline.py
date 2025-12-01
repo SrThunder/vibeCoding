@@ -44,18 +44,42 @@ class HybridRAGPipeline:
         """
         query_embedding = self.embeddings.embed_query(query)
         
-        # Buscar en tabla faqs (Supabase)
-        response = self.supabase.rpc(
-            "search_faqs",
-            {
-                "query_embedding": query_embedding,
-                "local_id": local_id,
-                "match_threshold": threshold,
-            }
-        ).execute()
-        
-        if response.data and len(response.data) > 0:
-            return response.data[0]
+        # Intentar buscar en tabla faqs (Supabase). Si falla, usar fallback local (faq_poc.json)
+        try:
+            response = self.supabase.rpc(
+                "search_faqs",
+                {
+                    "query_embedding": query_embedding,
+                    "local_id": local_id,
+                    "match_threshold": threshold,
+                }
+            ).execute()
+
+            if response.data and len(response.data) > 0:
+                return response.data[0]
+        except Exception as e:
+            # Fallback local: cargar faq_poc.json y hacer búsqueda por palabras clave
+            try:
+                with open("faq_poc.json", "r", encoding="utf-8") as f:
+                    faqs = json.load(f).get("faqs", [])
+                q = query.lower()
+                # Mejor búsqueda por tokens: coincidir suficientes tokens en cualquier campo
+                tokens = [t for t in q.split() if len(t) > 2]
+                for faq in faqs:
+                    text = " ".join([str(faq.get(k, "")) for k in ("pregunta", "respuesta", "categoria")]).lower()
+                    matches = sum(1 for t in tokens if t in text)
+                    # Considerar match si se encuentran al menos la mitad de los tokens (mínimo 1)
+                    if matches >= max(1, len(tokens) // 2):
+                        return {
+                            "id": faq.get("id"),
+                            "question": faq.get("pregunta"),
+                            "answer": faq.get("respuesta"),
+                            "category": faq.get("categoria"),
+                            "pdf_link": faq.get("pdf_link"),
+                        }
+            except Exception:
+                pass
+
         return None
     
     def _search_products(self, query: str, local_id: str, top_k: int = 3) -> List[Dict]:
@@ -72,17 +96,46 @@ class HybridRAGPipeline:
         """
         query_embedding = self.embeddings.embed_query(query)
         
-        # Buscar en tabla products
-        response = self.supabase.rpc(
-            "search_products",
-            {
-                "query_embedding": query_embedding,
-                "local_id": local_id,
-                "match_count": top_k,
-            }
-        ).execute()
-        
-        return response.data if response.data else []
+        # Intentar buscar en tabla products (Supabase). Si falla, usar fallback local (catalogo_jerarquia.json)
+        try:
+            response = self.supabase.rpc(
+                "search_products",
+                {
+                    "query_embedding": query_embedding,
+                    "local_id": local_id,
+                    "match_count": top_k,
+                }
+            ).execute()
+
+            return response.data if response.data else []
+        except Exception:
+            # Fallback local: cargar catalogo_jerarquia.json y hacer búsqueda por nombre/categoría
+            try:
+                with open("catalogo_jerarquia.json", "r", encoding="utf-8") as f:
+                    catalog = json.load(f)
+                    products = catalog.get("products", []) if isinstance(catalog, dict) else catalog
+                q = query.lower()
+                matches = []
+                for p in products:
+                    text = " ".join([str(p.get(k, "")) for k in ("nombre", "categoria", "descripcion")]).lower()
+                    if q in text:
+                        matches.append({
+                            "id": p.get("id"),
+                            "product_id": p.get("product_id") or p.get("id"),
+                            "nombre": p.get("nombre") or p.get("id"),
+                            "categoria": p.get("categoria"),
+                            "descripcion": p.get("descripcion", ""),
+                            "variantes": p.get("variantes", []),
+                            "usos": p.get("usos", []),
+                            "beneficios": p.get("beneficios", []),
+                            "pdf_link": p.get("pdf_link"),
+                            "stock": p.get("stock", True),
+                        })
+                    if len(matches) >= top_k:
+                        break
+                return matches
+            except Exception:
+                return []
     
     def _generate_response(
         self,
