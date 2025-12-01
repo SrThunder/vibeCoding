@@ -6,7 +6,7 @@ Implementa pipeline híbrido: FAQ primero, luego búsqueda vectorial.
 from typing import Dict, List, Optional
 from dataclasses import dataclass
 from supabase import create_client
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_core.prompts import ChatPromptTemplate
 import json

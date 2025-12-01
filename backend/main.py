@@ -10,7 +10,7 @@ from typing import Optional, Dict, List
 from functools import lru_cache
 
 from fastapi import FastAPI, Depends, HTTPException, status, Body
-from fastapi.security import HTTPBearer, HTTPAuthCredentials
+from fastapi.security import HTTPBearer
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 import jwt
@@ -179,9 +179,15 @@ def verify_token(token: str) -> TokenPayload:
         )
 
 
-async def get_current_user(credentials: HTTPAuthCredentials = Depends(security)) -> TokenPayload:
+async def get_current_user(credentials = Depends(security)) -> TokenPayload:
     """Dependency para obtener usuario actual del JWT."""
-    return verify_token(credentials.credentials)
+    if credentials is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="No autorizado"
+        )
+    token = credentials.credentials if hasattr(credentials, 'credentials') else credentials
+    return verify_token(token)
 
 
 # ===================== ENDPOINTS DE AUTENTICACIÓN =====================
