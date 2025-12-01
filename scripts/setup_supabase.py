@@ -15,9 +15,15 @@ import os
 import sys
 from typing import Optional
 from dotenv import load_dotenv
-import psycopg2
-from psycopg2.extras import execute_values
 import json
+
+try:
+    from supabase import create_client
+    import supabase
+except ImportError:
+    print("❌ Error: supabase no está instalado")
+    print("   Ejecuta: pip install supabase")
+    sys.exit(1)
 
 # Load environment variables
 load_dotenv()
@@ -25,33 +31,17 @@ load_dotenv()
 # Connection parameters
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
-SUPABASE_PASSWORD = os.getenv("SUPABASE_PASSWORD", "")
 
 if not SUPABASE_URL or not SUPABASE_KEY:
     print("❌ Error: SUPABASE_URL o SUPABASE_KEY no configurados")
     print("   Configura estas variables en .env")
     sys.exit(1)
 
-# Extract host from URL
-# Format: https://xxxxx.supabase.co
-SUPABASE_HOST = SUPABASE_URL.replace("https://", "").replace("http://", "").split(".")[0]
-SUPABASE_HOST = f"{SUPABASE_HOST}.supabase.co"
-SUPABASE_DB = "postgres"
-SUPABASE_USER = "postgres"
+print(f"🔗 Conectando a Supabase: {SUPABASE_URL}")
 
-print(f"🔗 Conectando a Supabase: {SUPABASE_HOST}")
-
-# Connect to Supabase
+# Connect to Supabase using REST API
 try:
-    conn = psycopg2.connect(
-        host=SUPABASE_HOST,
-        port=5432,
-        database=SUPABASE_DB,
-        user=SUPABASE_USER,
-        password=SUPABASE_KEY,
-        sslmode="require"
-    )
-    cursor = conn.cursor()
+    client = create_client(SUPABASE_URL, SUPABASE_KEY)
     print("✅ Conexión exitosa")
 except Exception as e:
     print(f"❌ Error de conexión: {e}")
