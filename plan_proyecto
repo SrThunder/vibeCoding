@@ -1,0 +1,257 @@
+# Plan de Proyecto: Sistema de Recomendación de Materiales (RAG)
+
+## 1. Resumen Ejecutivo
+
+El presente documento detalla el plan de proyecto para el desarrollo y despliegue de un **Sistema de Recomendación de Materiales para Mostradores** basado en una arquitectura RAG (Retrieval-Augmented Generation) híbrida. El objetivo principal es construir un MVP en el menor tiempo posible, con un costo de infraestructura mínimo y una operación sin complicaciones, permitiendo a los vendedores asistir a clientes de manera eficaz.
+
+La arquitectura seleccionada prioriza **servicios gestionados (Managed Services)** para garantizar velocidad de implementación, alta disponibilidad y escalabilidad. Se ha optado por **Render** y **Supabase** como proveedores clave para optimizar los costos sin sacrificar la fiabilidad. El desarrollo se realizará en fases, comenzando con un enfoque pragmático usando **Python y LangChain**, evitando la complejidad de suites agenticas en la etapa inicial.
+
+## 2. Objetivos del Proyecto
+
+Los objetivos se alinean con el PRD original:
+
+*   **Construir un MVP funcional en 10 días:** Un sistema que guíe la conversación y recomiende productos.
+*   **Asistir a vendedores:** Proveer respuestas precisas basadas en el catálogo de productos y un listado de FAQs.
+*   **Implementar una arquitectura escalable:** Capaz de crecer de 1 a 15 locales en 5 meses.
+*   **Minimizar costos operativos y de infraestructura:** Enfocándose en un gasto mensual predecible (~$17-27/mes en MVP).
+*   **Garantizar alta disponibilidad (uptime):** A través de Render Starter ($7/mes) para evitar cold starts. Infraestructura gestionada y confiable.
+
+## 3. Arquitectura Técnica Seleccionada
+
+### 3.1. Filosofía de Arquitectura
+
+Se adopta un modelo **PaaS (Platform as a Service)** para abstraer la complejidad de la infraestructura. Esto permite al equipo de desarrollo centrarse exclusivamente en la lógica de negocio y la experiencia del usuario. La arquitectura es híbrida, combinando una búsqueda rápida en FAQs para preguntas comunes con un pipeline RAG completo para consultas complejas.
+
+### 3.2. Diagrama de Arquitectura
+
+```
+[Streamlit Frontend] (Streamlit Cloud - Free)
+   |
+   | (HTTPS API Calls)
+   v
+[FastAPI Backend] (Render Starter - $7/mes)
+   |
+   | (Conexión BD + Llamadas API)
+   v
+[Supabase (Postgres + pgvector - Free)] + [OpenAI Platform]
+```
+
+### 3.3. Componentes y Tecnologías
+
+| Componente | Tecnología/Proveedor | Versión/Plan | Justificación |
+| :--- | :--- | :--- | :--- |
+| **Frontend** | Streamlit | Última versión estable | Desarrollo rápido de UIs de chat. |
+| **Despliegue Frontend** | Streamlit Cloud | Plan Gratuito | Sin cold starts, ideal para chat en tiempo real. |
+| **Backend** | FastAPI | Última versión estable | Alto rendimiento para APIs Python. |
+| **Despliegue Backend** | Render | Plan Starter ($7/mes) | Disponibilidad 24/7. Evita cold starts críticos. |
+| **Orquestación RAG** | LangChain | Última versión estable | Framework estándar y robusto para RAG. |
+| **Base de Datos** | Supabase | Plan Gratuito | Unifica BD relacional y vectorial (pgvector) con gestión incluida. |
+| **Base de Datos Vectorial** | pgvector (en Supabase) | Extensión de Postgres | Alto rendimiento, sin necesidad de un servicio separado. |
+| **Modelo de Lenguaje (LLM)** | OpenAI `gpt-4o-mini` | - | Máxima calidad y velocidad a un bajo costo. |
+| **Modelo de Embeddings** | OpenAI `text-embedding-3-small` | - | Optimizado para el ecosistema de OpenAI. |
+| **Control de Versiones** | Git / GitHub | - | Estándar de la industria para desarrollo colaborativo. |
+
+## 4. Plan de Desarrollo y Evolución del RAG
+
+El desarrollo se estructura en fases iterativas, comenzando con lo más simple y añadiendo complejidad de forma controlada.
+
+### 4.1. Fase 1: MVP (10 Días)
+
+**Objetivo:** Lanzar un sistema funcional que valide la idea central.
+
+**Prerequisitos:** 
+- Catálogo de productos en JSON normalizado (JSON + PDF)
+- Lista de 20-50 FAQs del negocio con links a secciones del PDF
+- URL publica del PDF del catálogo
+
+**Arquitectura RAG:**
+- **Híbrida:** FAQ primero (rápido) → Búsqueda vectorial (preciso) → Generación LLM
+- **Referencias PDF:** Todo resultado incluye `pdf_link` para consulta de catálogo completo
+- **Chunking:** 500 caracteres con overlap 100 para products
+- **Metadatos:** Cada chunk incluye id único, categoría, producto_id para filtrado
+
+*   **Backend (FastAPI + LangChain):**
+    *   [ ] Implementar autenticación con **JWT + Refresh Tokens** (seguro para múltiples usuarios).
+        *   Endpoint `/auth/login`: recibe credenciales, devuelve access_token (15 min) + refresh_token (7 días).
+        *   Endpoint `/auth/refresh`: renueva access_token usando refresh_token.
+        *   Middleware que valida JWT en cada request. Almacenar refresh_tokens en Supabase.
+    *   [ ] Crear endpoint `/query` que reciba la necesidad del cliente (requiere JWT válido).
+    *   [ ] Implementar lógica de enrutamiento: buscar primero en el FAQ.
+    *   [ ] Si no hay coincidencia en FAQ, ejecutar pipeline RAG simple:
+        *   Recuperador (`Retriever`) sobre Supabase/pgvector (búsqueda de productos).
+        *   Prompt template para `gpt-4o-mini` con contexto de productos.
+        *   Cadena (`Runnable`) que une contexto y pregunta.
+    *   [ ] **Referencias PDF:** Incluir `pdf_link` en respuestas para acceso a catálogo completo.
+    *   [ ] Devolver respuesta en formato JSON con metadata (user_id, timestamp, pdf_link, confianza).
+*   **Frontend (Streamlit):**
+    *   [ ] Crear interfaz de chat simple (`st.chat_input`, `st.chat_message`).
+    *   [ ] Conectar con el backend de FastAPI a través de `requests`.
+    *   [ ] Mostrar respuestas del backend.
+*   **Datos (Supabase):**
+    *   [ ] Crear tabla `users` (id, email, password_hash, local_id, role, created_at, updated_at).
+    *   [ ] Crear tabla `refresh_tokens` (id, user_id, token_hash, expires_at, created_at).
+    *   [ ] Crear tabla `products` (id, product_id, nombre, categoria, subcategoria, descripcion, contenido [chunk], variantes, usos, beneficios, pdf_link, stock, vector, local_id).
+    *   [ ] Crear tabla `faqs` (id, question, answer, category, pdf_link, vector, local_id).
+    *   [ ] Crear tabla `logs` (id, timestamp, user_id, local_id, query, response, product_recommended, pdf_link_sent, confidence).
+    *   [ ] **Chunking:** Dividir descripción de productos en fragmentos de 500 caracteres con overlap de 100 caracteres.
+    *   [ ] Generar embeddings con `text-embedding-3-small` y almacenarlos en pgvector.
+    *   [ ] Poblar tablas iniciales (catálogo normalizado + FAQs con pdf_links + usuarios piloto con password_hash seguro).
+    *   [ ] **PDF:** Almacenar URL público del PDF en variable de entorno `CATALOG_PDF_URL`.
+    *   [ ] Crear funciones SQL en Supabase: `search_faqs()` y `search_products()` para búsqueda vectorial.
+
+**Entregable:** Sistema desplegado en producción accesible para un grupo de vendedores piloto.
+
+### 4.2. Fase 2: Versión 1.2 (Mes 1)
+
+**Objetivo:** Mejorar la precisión y la usabilidad del sistema.
+
+*   **Mejoras RAG:**
+    *   [ ] Implementar **Self-Querying Retriever** para filtrar por metadatos (ej. "productos para exterior").
+    *   [ ] Implementar **Re-ranking** con un modelo más potente para re-ordenar los resultados iniciales.
+    *   [ ] Refinar el prompt para generar preguntas aclaratorias más inteligentes.
+*   **Dashboard:**
+    *   [ ] Crear una página simple en Streamlit para supervisores.
+    *   [ ] Mostrar estadísticas básicas (consultas/día, productos más recomendados) leyendo de una tabla `logs` en Supabase.
+
+### 4.3. Fase 3: Versión 2.0 (Mes 3)
+
+**Objetivo:** Aumentar la robustez y la inteligencia del sistema.
+
+*   **Base de Datos:**
+    *   [ ] Migrar de Supabase Free a un plan pago si es necesario por el crecimiento de datos.
+*   **Arquitectura (Opcional):**
+    *   [ ] Evaluar la necesidad de introducir **agentes** (ej. LangGraph) para flujos más complejos, como "recomendar y luego buscar si hay una promoción activa".
+
+### 4.4. Fase 4: Escalamiento (Mes 5)
+
+**Objetivo:** Preparar el sistema para 15 locales.
+
+*   **Autenticación:**
+    *   [ ] Implementar autenticación empresarial (ej. Auth0) o un sistema de multi-tenant robusto.
+*   **Infraestructura:**
+    *   [ ] Evaluar la necesidad de escalar los planes de Render y Supabase.
+*   **Métricas:**
+    *   [ ] Implementar un dashboard avanzado con métricas por local.
+
+## 5. Plan de Despliegue a Producción
+
+### 5.1. Requisitos Previos (Cuentas y Suscripciones)
+
+| Servicio | Requisito | Costo Estimado (Mensual) | Acción |
+| :--- | :--- | :--- | :--- |
+| **GitHub** | Cuenta de GitHub | $0 (Free) | Crear cuenta en [github.com](https://github.com). |
+| **Render** | Cuenta de Render | $7 (Starter) | Crear cuenta en [render.com](https://render.com). Plan Starter para evitar cold starts. |
+| **Supabase** | Cuenta de Supabase | $0 (Free) | Crear cuenta en [supabase.com](https://supabase.com). |
+| **OpenAI** | Cuenta de OpenAI con método de pago | ~$5-15 (Uso) | Crear cuenta en [platform.openai.com](https://platform.openai.com). |
+| **Streamlit Cloud** | Cuenta de Streamlit | $0 (Free) | Crear cuenta en [share.streamlit.io](https://share.streamlit.io). |
+
+### 5.2. Configuración del Entorno Local de Desarrollo
+
+*   **Python:** Versión 3.11+
+*   **Entorno Virtual:** `venv` o `conda`.
+*   **IDE:** VS Code (recomendado con extensiones de Python y Docker).
+*   **Git:** Cliente de Git instalado y configurado.
+| **Dependencias:** | `requirements.txt` con `fastapi`, `uvicorn`, `streamlit`, `langchain`, `openai`, `supabase`, `python-dotenv`, `pyjwt`, `passlib[bcrypt]`, `langchain-openai`. |
+
+### 5.3. Timeline de Despliegue (MVP)
+
+| Día | Tarea | Responsable | Paralelizable |
+| :--- | :--- | :--- | :--- |
+| **Día 0** | Crear cuentas (GitHub, Render, Supabase, OpenAI, Streamlit). Obtener catálogo normalizado, FAQs y PDF públicos del owner. | Líder de Proyecto | No |
+| **Días 1-2** | Configurar Supabase: crear extensión vector, diseñar schema (con PDF links), crear script SQL. Crear repositorio Git. | Backend Dev | Sí |
+| **Día 3** | Ejecutar script `ingest_catalog.py`: poblar products + faqs, generar embeddings, crear funciones SQL. | Backend Dev | Depende del Día 2 |
+| **Días 3-4** | Desarrollar core del backend: endpoints auth, `/query` con RAG, middleware JWT, manejo de pdf_link en respuestas. | Backend Dev | No |
+| **Días 3-4** | Desarrollar frontend: login form, UI chat, mostrar pdf_link en respuestas, manejo de tokens en session state. | Frontend Dev | Sí |
+| **Día 5** | Desplegar backend en Render con vars de entorno (incl. `CATALOG_PDF_URL`). | Backend Dev | No |
+| **Día 6** | Desplegar frontend en Streamlit Cloud. | Frontend Dev | No |
+| **Días 7-10** | Pruebas E2E (login, RAG, pdf_links), ajustes, validación con grupo piloto de 5-10 vendedores. | Todo el Equipo | No |
+
+### 5.4. Guía de Despliegue Paso a Paso
+
+1.  **Configurar Supabase:**
+    *   Crear un nuevo proyecto.
+    *   En el SQL Editor, ejecutar `CREATE EXTENSION vector;`.
+    *   Crear tablas `users`, `refresh_tokens`, `products`, `faqs`, `logs` con esquema actualizado (con `pdf_link`).
+    *   Ejecutar funciones SQL: `search_faqs()` y `search_products()` (ver `rag_pipeline.py`).
+    *   Ir a `Settings > API` y guardar `Project URL` y `service_role key`.
+
+2.  **Configurar OpenAI:**
+    *   Ir a `User > API keys` y generar una nueva "Secret key".
+    *   **Guardar esta clave de forma segura.**
+
+3.  **Preparar Código en Repositorio:**
+    *   Estructura: `backend/main.py`, `backend/rag_pipeline.py`, `backend/requirements.txt`, `backend/.env.example`, `frontend/app.py`, `scripts/ingest_catalog.py`.
+    *   `.gitignore`: incluir `.env`, `__pycache__/`, `*.pyc`, `.venv/`, `*.pdf`.
+    *   Backend: usar `python-dotenv` para cargar `.env` localmente.
+    *   Variables clave: `CATALOG_PDF_URL` (URL pública del PDF del catálogo).
+    *   Script `ingest_catalog.py` para poblar productos + FAQs desde JSON normalizado.
+
+4.  **Desplegar Backend en Render:**
+    *   Loguearse en Render y hacer click en "New +" -> "Web Service".
+    *   Conectar la cuenta de GitHub y seleccionar el repositorio.
+    *   Render detectará el `requirements.txt`.
+    *   **Runtime:** `Python 3`.
+    *   **Build Command:** `pip install -r requirements.txt`.
+    *   **Start Command:** `uvicorn main:app --host 0.0.0.0 --port $PORT`.
+    *   Ir a la sección "Environment" y añadir variables de entorno:
+        *   `OPENAI_API_KEY`: Clave de OpenAI.
+        *   `SUPABASE_URL`: URL de Supabase.
+        *   `SUPABASE_KEY`: Service role key de Supabase.
+        *   `JWT_SECRET_KEY`: Clave secreta fuerte (`openssl rand -hex 32`).
+        *   `JWT_ALGORITHM`: `HS256`.
+        *   `JWT_EXPIRES_MINUTES`: `15`.
+        *   `JWT_REFRESH_EXPIRES_DAYS`: `7`.
+        *   `CATALOG_PDF_URL`: URL pública del PDF del catálogo.
+    *   Hacer click en "Create Web Service".
+
+5.  **Desplegar Frontend en Streamlit Cloud:**
+    *   Loguearse en Streamlit Cloud y conectar la cuenta de GitHub.
+    *   Seleccionar el repositorio y la carpeta del frontend.
+    *   Ir a "Advanced settings" y en "Secrets" añadir:
+        *   `BACKEND_URL`: URL del backend desplegado en Render (ej. `https://mi-app.onrender.com`).
+    *   Hacer click en "Deploy".
+
+## 6. Gestión de la Configuración y Secretos
+
+*   **Nunca hardcodear** claves de API, JWTs, URLs o links de PDF en el código.
+*   Usar siempre **variables de entorno**.
+*   En desarrollo local, usar archivo `.env` (añadido al `.gitignore`) con `python-dotenv`.
+*   En producción, configurar variables en Render y Streamlit Cloud.
+*   **JWT Security:**
+    *   Generar `JWT_SECRET_KEY` con `openssl rand -hex 32` (nunca reutilizar).
+    *   Access tokens cortos (15 min) + refresh tokens largos (7 días, en BD).
+    *   Refresh tokens hasheados en BD.
+    *   Frontend guarda tokens en sessionStorage.
+*   **PDF References:**
+    *   `pdf_link` incluido en cada respuesta RAG.
+    *   URL pública del catálogo completo en `CATALOG_PDF_URL`.
+    *   Links a secciones específicas del PDF usando anchors (#sección).
+
+## 7. Monitoreo y Logs
+
+*   **Logs de Aplicación:** Render y Streamlit Cloud proporcionan logs de la aplicación en sus dashboards.
+*   **Logs de Negocio:** Cada consulta se guardará en la tabla `logs` de Supabase. Se puede construir un dashboard simple sobre esta tabla.
+*   **Rendimiento:** Se usa plan Starter de Render ($7/mes) desde MVP para garantizar disponibilidad 24/7. Evita cold starts y latencias impredecibles.
+
+## 8. Presupuesto Estimado (MVP)
+
+| Concepto | Costo Mensual |
+| :--- | :--- |
+| **Infraestructura** | |
+| Render (Starter Plan - 24/7) | $7 |
+| Supabase (Plan Gratuito) | $0 |
+| Streamlit Cloud | $0 |
+| **API de IA (OpenAI)** | ~$10 - $20 (gpt-4o-mini + embeddings) |
+| **Total MVP (Mes 1)** | **~$17 - $27** |
+
+## 9. Riesgos y Plan de Mitigación
+
+| Riesgo | Probabilidad | Impacto | Plan de Mitigación |
+| :--- | :--- | :--- | :--- |
+| **Límites de planes gratuitos en Supabase** | Baja | Medio | Supabase Free soporta ~50k vectores. Para 15 locales, migrar a plan Pro ($25/mes) en Mes 3. |
+| **Dependencia de OpenAI** | Baja | Alto | El código está desacoplado. Se podría cambiar a otro proveedor (ej. Groq, Anthropic) modificando una sola línea. |
+| **Calidad de los datos iniciales** | Alta | Alto | Sesión de workshop con owner (Día 0) para validar y enriquecer catálogo + FAQs. Incluir categorías y casos de uso. |
+| **Baja adopción por parte de vendedores** | Media | Alto | Realizar una sesión de formación y destacar los beneficios del sistema (menos errores, más ventas). |
+| **Autenticación JWT** | Baja (implementación estándar) | Medio | Usar librerías probadas (`pyjwt`, `passlib`). Validar tokens en cada request. Rotar secret_key anualmente. |
+| **Gestión de tokens** | Media | Alto | Refresh tokens hasheados en BD. Access tokens con corta duración. Implementar logout (invalidar refresh_tokens). |
+```

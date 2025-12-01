@@ -1,0 +1,139 @@
+{
+  "faqs": [
+    {
+      "id": "FAQ_001",
+      "pregunta": "¿Cuál es la diferencia entre varilla corrugada y malla electrosoldada?",
+      "respuesta": "La Varilla Corrugada se usa para refuerzo transversal en estructuras no sismorresistentes, columnas y vigas, requiere instalación manual. La Malla Electrosoldada es prefabricada, reduce accidentes, requiere menos personal y no necesita taller de obra. Elige malla si buscas rapidez y seguridad; varilla si necesitas presupuesto más bajo.",
+      "categoria": "Aceromateriales",
+      "palabras_clave": ["refuerzo", "acero", "diferencia", "varilla", "malla"],
+      "productos_relacionados": ["ACER_001", "ACER_003"],
+      "pdf_link": "https://dolmen.com/catalogo/aceromateriales.pdf#comparativa"
+    },
+    {
+      "id": "FAQ_002",
+      "pregunta": "¿Qué pintura recomiendan para paredes exteriores?",
+      "respuesta": "Recomendamos Látex Supremo para paredes exteriores. Resiste el clima, tiene excelente rendimiento y ofrece un acabado liso duradero. Disponible en galón y caneca. Es ideal para fachadas que requieren protección contra lluvia y cambios de temperatura.",
+      "categoria": "Pinturas",
+      "palabras_clave": ["pintura", "exterior", "fachada", "protección", "clima"],
+      "productos_relacionados": ["PINT_001"],
+      "pdf_link": "https://dolmen.com/catalogo/pinturas.pdf#latex-supremo"
+    },
+    {
+      "id": "FAQ_003",
+      "pregunta": "¿Cuál es el mejor adhesivo para pegado de cerámicas y azulejos?",
+      "respuesta": "Maxibond Standard es la opción ideal para cerámicas y azulejos. Tiene excelente adherencia en superficies y es muy fácil de mezclar, lo que acelera el trabajo en obra. Garantiza un resultado duradero y profesional.",
+      "categoria": "Morteros_Pegantes",
+      "palabras_clave": ["adhesivo", "cerámica", "azulejo", "pegado", "mortero"],
+      "productos_relacionados": ["MORT_002"],
+      "pdf_link": "https://dolmen.com/catalogo/morteros.pdf#maxibond-standard"
+    },
+    {
+      "id": "FAQ_004",
+      "pregunta": "¿El Combo Max incluye todo para instalar un baño completo?",
+      "respuesta": "Sí, el Combo Max es una solución integral que incluye: Inodoro Milán HET, Lavabo Alpes y Llave Capri. Estos componentes son compatibles y están diseñados para funcionar juntos. Perfecto para proyectos residenciales donde necesitas ahorrar tiempo en coordinación.",
+      "categoria": "Grifería",
+      "palabras_clave": ["baño", "inodoro", "combo", "instalación", "integral"],
+      "productos_relacionados": ["GRIF_001"],
+      "pdf_link": "https://dolmen.com/catalogo/griferia.pdf#combo-max"
+    },
+    {
+      "id": "FAQ_005",
+      "pregunta": "¿Qué bloque recomiendan para muros divisorios?",
+      "respuesta": "El Bloque Rojo Rayado es perfecto para muros divisorios. Disponible en dimensiones 07x30x41, 09x30x41 y 14x30x41 según tu necesidad de espesor. Es económico, duradero, fácil de trabajar y proporciona buen aislamiento térmico. Ideal para construcción residencial.",
+      "categoria": "Bloques_Acabados",
+      "palabras_clave": ["bloque", "muro", "divisorio", "construcción", "residencial"],
+      "productos_relacionados": ["BLOQ_001"],
+      "pdf_link": "https://dolmen.com/catalogo/bloques.pdf#bloque-rojo"
+    },
+    {
+      "id": "FAQ_006",
+      "pregunta": "¿Para qué sirve el Uniseal y por qué es importante usarlo?",
+      "respuesta": "Uniseal es un sellador y preparador clave para enlucidos y muros de cemento. Es repelente al agua, aumenta la adherencia de otras capas, reduce la alcalinidad de superficies nuevas y evita manchas futuras. Se recomienda aplicarlo ANTES de otras pinturas para garantizar un acabado profesional y duradero.",
+      "categoria": "Pinturas",
+      "palabras_clave": ["sellador", "preparador", "enlucido", "muro", "alcalinidad"],
+      "productos_relacionados": ["PINT_002"],
+      "pdf_link": "https://dolmen.com/catalogo/pinturas.pdf#uniseal"
+    },
+    {
+      "id": "FAQ_007",
+      "pregunta": "¿Cuáles son los beneficios de usar Multimix en lugar de mortero tradicional?",
+      "respuesta": "Multimix es un mortero predosificado con múltiples ventajas: es durable, viene listo para mezclar (no requiere dosificación manual), garantiza constancia en calidad de lote a lote, acelera el trabajo en obra y reduce errores. Ideal para nivelación de pisos, enlucido y pega de bloques.",
+      "categoria": "Morteros_Pegantes",
+      "palabras_clave": ["mortero", "multimix", "predosificado", "calidad", "eficiencia"],
+      "productos_relacionados": ["MORT_001"],
+      "pdf_link": "https://dolmen.com/catalogo/morteros.pdf#multimix"
+    },
+    {
+      "id": "FAQ_008",
+      "pregunta": "¿Qué tubería cuadrada debo usar para una estructura metálica liviana?",
+      "respuesta": "Para estructuras ligeras, recomendamos Tubería Cuadrada en dimensión 50x50 con espesor 1.8mm o 2.0mm, ambas de 6 metros. Para cargas moderadas, usa 75x75, y para estructuras más robustas, 100x100. Consulta con tu ingeniero estructural el espesor exacto según el diseño.",
+      "categoria": "Aceromateriales",
+      "palabras_clave": ["tubería", "estructura", "metálica", "carga", "dimensión"],
+      "productos_relacionados": ["ACER_002"],
+      "pdf_link": "https://dolmen.com/catalogo/aceromateriales.pdf#tuberia-cuadrada"
+    },
+    {
+      "id": "FAQ_009",
+      "pregunta": "¿Cuáles son las dimensiones disponibles de Baldosa Gres y para qué proyectos sirven?",
+      "respuesta": "Baldosa Gres está disponible en: 33x33, 30x30 y 10x21 cm. Es versátil para interiores, exteriores y espacios de alto tráfico peatonal. Su alta resistencia la hace ideal para pisos comerciales, pasillos, baños y áreas exteriores. Fácil de limpiar y muy durable.",
+      "categoria": "Bloques_Acabados",
+      "palabras_clave": ["baldosa", "gres", "piso", "resistencia", "tráfico"],
+      "productos_relacionados": ["BLOQ_003"],
+      "pdf_link": "https://dolmen.com/catalogo/bloques.pdf#baldosa-gres"
+    },
+    {
+      "id": "FAQ_010",
+      "pregunta": "¿Para qué se usa Maxiempaste Interior y cuáles son sus ventajas?",
+      "respuesta": "Maxiempaste Interior es una pasta especial para acabados en paredes y cielorrasos. Sus principales ventajas: acabado extra liso (sin porosidades), no se agrieta incluso en cambios de temperatura, no ampolla, fácil de aplicar y proporciona una superficie lista para pintar. Perfecto para proyectos residenciales de calidad.",
+      "categoria": "Morteros_Pegantes",
+      "palabras_clave": ["pasta", "interior", "acabado", "liso", "cielorraso"],
+      "productos_relacionados": ["MORT_003"],
+      "pdf_link": "https://dolmen.com/catalogo/morteros.pdf#maxiempaste-interior"
+    },
+    {
+      "id": "FAQ_011",
+      "pregunta": "¿Qué beneficios tiene usar Plywood en encofrados?",
+      "respuesta": "Plywood ofrece múltiples beneficios para encofrados: alta resistencia estructural, reutilizable para varios proyectos (reduciendo costos), durabilidad superior al triplay tradicional, facilita el desencofrado sin daños, ideal también para campamentos y cubiertas temporales. Inversión que se amortiza rápidamente.",
+      "categoria": "Materiales",
+      "palabras_clave": ["plywood", "encofrado", "reutilizable", "resistencia", "durabilidad"],
+      "productos_relacionados": ["MAT_001"],
+      "pdf_link": "https://dolmen.com/catalogo/materiales.pdf#plywood"
+    },
+    {
+      "id": "FAQ_012",
+      "pregunta": "¿Cuáles son las ventajas de Esmalte Supremo para puertas metálicas?",
+      "respuesta": "Esmalte Supremo es ideal para puertas metálicas porque: secado rápido (acelera la obra), extremadamente duradero, resistente a humedad y químicos, protege contra oxidación, proporciona acabado profesional. También funciona excelente en barandas y muebles de madera. Una aplicación cubre bien y resiste años de uso.",
+      "categoria": "Pinturas",
+      "palabras_clave": ["esmalte", "puerta", "metálica", "oxidación", "resistencia"],
+      "productos_relacionados": ["PINT_003"],
+      "pdf_link": "https://dolmen.com/catalogo/pinturas.pdf#esmalte-supremo"
+    },
+    {
+      "id": "FAQ_013",
+      "pregunta": "¿Qué variantes de Adoquín Rústico existen y en qué proyectos se usan?",
+      "respuesta": "Adoquín Rústico está disponible en tres espesores: 2.5x10x21, 4x10x21 y 6x10x21 cm. Se usa en vías peatonales, proyectos residenciales y parques. El espesor depende del tráfico esperado: 2.5cm para peatones ligeros, 4cm para uso regular, 6cm para áreas de tráfico intenso o con vehículos.",
+      "categoria": "Bloques_Acabados",
+      "palabras_clave": ["adoquín", "rústico", "vía", "peatonal", "parque"],
+      "productos_relacionados": ["BLOQ_002"],
+      "pdf_link": "https://dolmen.com/catalogo/bloques.pdf#adoquin-rustico"
+    },
+    {
+      "id": "FAQ_014",
+      "pregunta": "¿Cuáles son las aplicaciones de Cemento Fuerte?",
+      "respuesta": "Cemento Fuerte es un cemento de alta resistencia formulado especialmente para: enlucido de muros, nivelado de pisos, mampostería de alta calidad. Su formulación especial garantiza máxima durabilidad y resistencia. Ideal para proyectos que requieren precisión y acabados duraderos.",
+      "categoria": "Materiales",
+      "palabras_clave": ["cemento", "fuerte", "enlucido", "nivelado", "mampostería"],
+      "productos_relacionados": ["MAT_002"],
+      "pdf_link": "https://dolmen.com/catalogo/materiales.pdf#cemento-fuerte"
+    },
+    {
+      "id": "FAQ_015",
+      "pregunta": "¿Qué especificaciones técnicas tiene la Llave Campanola?",
+      "respuesta": "Llave Campanola ½ pulgada es una llave de bronce diseñada para duchas y lavabos. Sus especificaciones técnicas: resistente a corrosión (material bronce), funcionamiento estable en rango de presión 20-125 PSI, tamaño ½ pulgada estándar. Proporciona control de flujo confiable y durable.",
+      "categoria": "Grifería",
+      "palabras_clave": ["llave", "campanola", "presión", "bronce", "corrosión"],
+      "productos_relacionados": ["GRIF_002"],
+      "pdf_link": "https://dolmen.com/catalogo/griferia.pdf#llave-campanola"
+    }
+  ]
+}

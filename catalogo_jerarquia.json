@@ -1,0 +1,367 @@
+{
+  "productos": [
+    {
+      "id": "ACER_001",
+      "nombre": "Varilla Corrugada",
+      "categoria": "Aceromateriales",
+      "subcategoria": "Refuerzo",
+      "descripcion": "Varilla corrugada para refuerzo de estructuras no sismorresistentes. Excelente para columnas, vigas y esquinas en muros portantes.",
+      "variantes": [
+        "8mm x 12mt",
+        "10mm x 12mt",
+        "12mm x 12mt"
+      ],
+      "usos": [
+        "Refuerzo transversal no sismorresistente",
+        "Columnas y vigas",
+        "Esquinas en muros portantes"
+      ],
+      "beneficios": [
+        "Menor riesgo de accidentes",
+        "Menor personal requerido",
+        "Reducción de espacio en obra"
+      ],
+      "pdf_link": "https://dolmen.com/catalogo/aceromateriales.pdf#varilla-corrugada",
+      "stock": true
+    },
+    {
+      "id": "ACER_002",
+      "nombre": "Tubería Cuadrada",
+      "categoria": "Aceromateriales",
+      "subcategoria": "Estructuras",
+      "descripcion": "Tubería cuadrada de alta resistencia para estructuras metálicas y entrepisos mixtos. Disponible en múltiples dimensiones.",
+      "variantes": [
+        "50x50x1.8mm – 6mt",
+        "50x50x2.0mm – 6mt",
+        "50x50x3.0mm – 6mt",
+        "75x75x1.8mm – 6mt",
+        "75x75x2.0mm – 6mt",
+        "75x75x3.0mm – 6mt",
+        "100x100x1.8mm – 6mt",
+        "100x100x2.0mm – 6mt",
+        "100x100x3.0mm – 6mt"
+      ],
+      "usos": [
+        "Estructuras metálicas",
+        "Entrepisos mixtos"
+      ],
+      "beneficios": [],
+      "pdf_link": "https://dolmen.com/catalogo/aceromateriales.pdf#tuberia-cuadrada",
+      "stock": true
+    },
+    {
+      "id": "ACER_003",
+      "nombre": "Malla Electrosoldada",
+      "categoria": "Aceromateriales",
+      "subcategoria": "Refuerzo",
+      "descripcion": "Malla electrosoldada para refuerzo en columnas, vigas y cadenas. Reduce accidentes y requiere menor personal.",
+      "variantes": [
+        "5.5mm 10x10 (2.35x6mt)",
+        "8mm 10x10 (2.35x6mt)",
+        "5.5mm 15x15 (2.35x6mt)"
+      ],
+      "usos": [
+        "Columnas",
+        "Vigas",
+        "Cadenas"
+      ],
+      "beneficios": [
+        "Reducción de accidentes",
+        "Menor personal",
+        "No requiere taller",
+        "Ahorro de espacio"
+      ],
+      "pdf_link": "https://dolmen.com/catalogo/aceromateriales.pdf#malla-electrosoldada",
+      "stock": true
+    },
+    {
+      "id": "PINT_001",
+      "nombre": "Látex Supremo",
+      "categoria": "Pinturas",
+      "subcategoria": "Acabados",
+      "descripcion": "Pintura látex de alta calidad para interiores y exteriores. Resiste clima y ofrece acabado liso y duradero.",
+      "variantes": [
+        "Galón",
+        "Caneca"
+      ],
+      "usos": [
+        "Paredes interiores y exteriores"
+      ],
+      "beneficios": [
+        "Resiste clima",
+        "Buen rendimiento",
+        "Acabado liso"
+      ],
+      "pdf_link": "https://dolmen.com/catalogo/pinturas.pdf#latex-supremo",
+      "stock": true
+    },
+    {
+      "id": "PINT_002",
+      "nombre": "Uniseal",
+      "categoria": "Pinturas",
+      "subcategoria": "Selladores",
+      "descripcion": "Sellador y preparador para enlucidos y muros de cemento. Aumenta adherencia y evita manchas.",
+      "variantes": [
+        "Presentación estándar"
+      ],
+      "usos": [
+        "Enlucidos",
+        "Muros de cemento",
+        "Superficies nuevas o alcalinas"
+      ],
+      "beneficios": [
+        "Repelente al agua",
+        "Aumenta adherencia",
+        "Reduce alcalinidad",
+        "Evita manchas"
+      ],
+      "pdf_link": "https://dolmen.com/catalogo/pinturas.pdf#uniseal",
+      "stock": true
+    },
+    {
+      "id": "PINT_003",
+      "nombre": "Esmalte Supremo",
+      "categoria": "Pinturas",
+      "subcategoria": "Acabados",
+      "descripcion": "Esmalte de secado rápido y alta durabilidad para superficies metálicas y madera. Resistente a humedad y químicos.",
+      "variantes": [
+        "Presentación estándar"
+      ],
+      "usos": [
+        "Puertas metálicas",
+        "Barandas",
+        "Muebles de madera"
+      ],
+      "beneficios": [
+        "Secado rápido",
+        "Durable",
+        "Resistente a humedad y químicos"
+      ],
+      "pdf_link": "https://dolmen.com/catalogo/pinturas.pdf#esmalte-supremo",
+      "stock": true
+    },
+    {
+      "id": "GRIF_001",
+      "nombre": "Combo Max",
+      "categoria": "Grifería",
+      "subcategoria": "Kits",
+      "descripcion": "Kit completo de baño que incluye inodoro, lavabo y llave. Solución integral para instalaciones.",
+      "variantes": [
+        "Combo completo"
+      ],
+      "usos": [
+        "Baños completos",
+        "Residencial"
+      ],
+      "beneficios": [
+        "Solución integral",
+        "Compatibilidad garantizada",
+        "Ahorro de tiempo"
+      ],
+      "componentes": [
+        "Inodoro Milán HET",
+        "Lavabo Alpes",
+        "Llave Capri"
+      ],
+      "pdf_link": "https://dolmen.com/catalogo/griferia.pdf#combo-max",
+      "stock": true
+    },
+    {
+      "id": "GRIF_002",
+      "nombre": "Llave Campanola ½",
+      "categoria": "Grifería",
+      "subcategoria": "Llaves",
+      "descripcion": "Llave de bronce resistente a corrosión. Funcionamiento estable en rango de presión 20-125 PSI.",
+      "variantes": [
+        "½ pulgada"
+      ],
+      "usos": [
+        "Duchas",
+        "Lavabos"
+      ],
+      "beneficios": [
+        "Resiste corrosión",
+        "Funcionamiento estable 20–125 PSI"
+      ],
+      "pdf_link": "https://dolmen.com/catalogo/griferia.pdf#llave-campanola",
+      "stock": true
+    },
+    {
+      "id": "MORT_001",
+      "nombre": "Multimix",
+      "categoria": "Morteros_Pegantes",
+      "subcategoria": "Morteros",
+      "descripcion": "Mortero predosificado para nivelación de pisos, enlucido y pega de bloques. Garantiza constancia en calidad.",
+      "variantes": [
+        "Presentación estándar"
+      ],
+      "usos": [
+        "Nivelación de pisos",
+        "Enlucido",
+        "Pega de bloques"
+      ],
+      "beneficios": [
+        "Durable",
+        "Predosificado",
+        "Constancia en calidad"
+      ],
+      "pdf_link": "https://dolmen.com/catalogo/morteros.pdf#multimix",
+      "stock": true
+    },
+    {
+      "id": "MORT_002",
+      "nombre": "Maxibond Standard",
+      "categoria": "Morteros_Pegantes",
+      "subcategoria": "Adhesivos",
+      "descripcion": "Adhesivo de fácil mezcla para pegado de cerámicas y azulejos. Buena adherencia en superficies.",
+      "variantes": [
+        "Presentación estándar"
+      ],
+      "usos": [
+        "Pegado de cerámicas y azulejos"
+      ],
+      "beneficios": [
+        "Buena adherencia",
+        "Fácil mezcla"
+      ],
+      "pdf_link": "https://dolmen.com/catalogo/morteros.pdf#maxibond-standard",
+      "stock": true
+    },
+    {
+      "id": "MORT_003",
+      "nombre": "Maxiempaste Interior",
+      "categoria": "Morteros_Pegantes",
+      "subcategoria": "Pastas",
+      "descripcion": "Pasta especial para paredes y cielorrasos. Extra lisa, no se agrieta ni ampolla.",
+      "variantes": [
+        "Presentación estándar"
+      ],
+      "usos": [
+        "Paredes y cielorrasos"
+      ],
+      "beneficios": [
+        "Extra liso",
+        "No se agrieta",
+        "No ampolla"
+      ],
+      "pdf_link": "https://dolmen.com/catalogo/morteros.pdf#maxiempaste-interior",
+      "stock": true
+    },
+    {
+      "id": "BLOQ_001",
+      "nombre": "Bloque Rojo Rayado",
+      "categoria": "Bloques_Acabados",
+      "subcategoria": "Bloques",
+      "descripcion": "Bloque de arcilla rojo rayado para muros divisorios, paredes gruesas y construcción residencial.",
+      "variantes": [
+        "07x30x41",
+        "09x30x41",
+        "14x30x41"
+      ],
+      "usos": [
+        "Muros divisorios",
+        "Paredes gruesas",
+        "Residencias"
+      ],
+      "beneficios": [
+        "Durabilidad",
+        "Aislamiento térmico",
+        "Facilidad de construcción"
+      ],
+      "pdf_link": "https://dolmen.com/catalogo/bloques.pdf#bloque-rojo",
+      "stock": true
+    },
+    {
+      "id": "BLOQ_002",
+      "nombre": "Adoquín Rústico",
+      "categoria": "Bloques_Acabados",
+      "subcategoria": "Adoquines",
+      "descripcion": "Adoquín de acabado rústico para vías peatonales, proyectos residenciales y espacios verdes.",
+      "variantes": [
+        "2.5x10x21",
+        "4x10x21",
+        "6x10x21"
+      ],
+      "usos": [
+        "Vías peatonales",
+        "Residencial",
+        "Parques"
+      ],
+      "beneficios": [
+        "Acabado rústico",
+        "Resistencia",
+        "Fácil instalación"
+      ],
+      "pdf_link": "https://dolmen.com/catalogo/bloques.pdf#adoquin-rustico",
+      "stock": true
+    },
+    {
+      "id": "BLOQ_003",
+      "nombre": "Baldosa Gres",
+      "categoria": "Bloques_Acabados",
+      "subcategoria": "Baldosas",
+      "descripcion": "Baldosa de gres de alta resistencia para interiores, exteriores y espacios de alto tráfico peatonal.",
+      "variantes": [
+        "33x33",
+        "30x30",
+        "10x21"
+      ],
+      "usos": [
+        "Interiores",
+        "Exteriores",
+        "Alto tráfico peatonal"
+      ],
+      "beneficios": [
+        "Alta resistencia",
+        "Durabilidad",
+        "Fácil limpieza"
+      ],
+      "pdf_link": "https://dolmen.com/catalogo/bloques.pdf#baldosa-gres",
+      "stock": true
+    },
+    {
+      "id": "MAT_001",
+      "nombre": "Plywood",
+      "categoria": "Materiales",
+      "subcategoria": "Maderas",
+      "descripcion": "Madera contrachapada de alta resistencia, reutilizable y durable. Ideal para encofrados y cubiertas.",
+      "variantes": [
+        "Presentación estándar"
+      ],
+      "usos": [
+        "Encofrados",
+        "Campamentos",
+        "Cubiertas"
+      ],
+      "beneficios": [
+        "Alta resistencia",
+        "Reutilizable",
+        "Durable"
+      ],
+      "pdf_link": "https://dolmen.com/catalogo/materiales.pdf#plywood",
+      "stock": true
+    },
+    {
+      "id": "MAT_002",
+      "nombre": "Cemento Fuerte",
+      "categoria": "Materiales",
+      "subcategoria": "Cementos",
+      "descripcion": "Cemento de alta resistencia para enlucido, nivelado y mampostería. Formulación especial para máxima durabilidad.",
+      "variantes": [
+        "Presentación estándar"
+      ],
+      "usos": [
+        "Enlucido",
+        "Nivelado",
+        "Mampostería"
+      ],
+      "beneficios": [
+        "Alta resistencia",
+        "Durabilidad",
+        "Facilidad de aplicación"
+      ],
+      "pdf_link": "https://dolmen.com/catalogo/materiales.pdf#cemento-fuerte",
+      "stock": true
+    }
+  ]
+}
