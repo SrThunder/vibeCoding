@@ -177,6 +177,80 @@ def show_chat():
     
     st.markdown("---")
     
+    # Mostrar FAQs sugeridas si no hay historial de chat
+    if not st.session_state.chat_history:
+        st.markdown("### 💡 Ejemplos de preguntas")
+        st.markdown("Haz clic en cualquier pregunta o escribe la tuya:")
+        
+        suggested_faqs = [
+            {
+                "pregunta": "¿Para qué sirven las varillas?",
+                "categoria": "Aceromateriales",
+                "emoji": "🔩"
+            },
+            {
+                "pregunta": "¿Qué producto evita la humedad en paredes?",
+                "categoria": "Pinturas",
+                "emoji": "💧"
+            },
+            {
+                "pregunta": "¿Qué selladores disponibles tiene DOLMEN?",
+                "categoria": "Pinturas",
+                "emoji": "🔧"
+            },
+            {
+                "pregunta": "¿Para qué sirven los morteros?",
+                "categoria": "Morteros_Pegantes",
+                "emoji": "🧱"
+            },
+            {
+                "pregunta": "¿Cuál es la diferencia entre varilla y malla?",
+                "categoria": "Aceromateriales",
+                "emoji": "⚖️"
+            },
+            {
+                "pregunta": "¿Qué producto uso para pisos?",
+                "categoria": "Bloques_Acabados",
+                "emoji": "🏠"
+            }
+        ]
+        
+        cols = st.columns(2)
+        for idx, faq in enumerate(suggested_faqs):
+            with cols[idx % 2]:
+                if st.button(
+                    f"{faq['emoji']} {faq['pregunta']}\n*{faq['categoria']}*",
+                    use_container_width=True,
+                    key=f"faq_{idx}"
+                ):
+                    # Simular entrada de usuario
+                    st.session_state.chat_history.append({
+                        "role": "user",
+                        "content": faq['pregunta']
+                    })
+                    
+                    # Enviar al backend
+                    with st.spinner("🤔 Buscando respuesta..."):
+                        resultado = query_backend(faq['pregunta'])
+                    
+                    if "error" not in resultado:
+                        respuesta_data = {
+                            "role": "assistant",
+                            "content": resultado["respuesta"],
+                            "fuente": resultado.get("fuente", "rag"),
+                            "confianza": resultado.get("confianza", 0),
+                            "pdf_link": resultado.get("pdf_link"),
+                        }
+                        
+                        if resultado.get("producto_recomendado"):
+                            respuesta_data["producto"] = resultado["producto_recomendado"]
+                        
+                        st.session_state.chat_history.append(respuesta_data)
+                    
+                    st.rerun()
+        
+        st.markdown("---")
+    
     # Contenedor de chat
     chat_container = st.container()
     
